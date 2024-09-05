@@ -2,6 +2,7 @@ package com.example.productservice.services;
 
 import com.example.productservice.dto.FakeStoreProductRequestDto;
 import com.example.productservice.dto.FakeStoreProductResponseDto;
+import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,14 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getProductById(int Id) {
+    public Product getProductById(int Id) throws ProductNotFoundException {
+
         FakeStoreProductResponseDto fakeStoreProductResponseDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + Id, FakeStoreProductResponseDto.class);
+
+        if(fakeStoreProductResponseDto == null) {
+            throw new ProductNotFoundException("Product with product id "+Id+" is not found");
+        }
+
         return fakeStoreProductResponseDto.toProduct();
     }
 
