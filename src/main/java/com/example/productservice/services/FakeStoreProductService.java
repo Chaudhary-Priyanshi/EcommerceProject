@@ -5,12 +5,11 @@ import com.example.productservice.dto.FakeStoreProductResponseDto;
 import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Product;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FakeStoreProductService implements ProductService{
@@ -22,12 +21,12 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getProductById(int Id) throws ProductNotFoundException {
+    public Product getProductById(Long id) throws ProductNotFoundException {
 
-        FakeStoreProductResponseDto fakeStoreProductResponseDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + Id, FakeStoreProductResponseDto.class);
+        FakeStoreProductResponseDto fakeStoreProductResponseDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductResponseDto.class);
 
         if(fakeStoreProductResponseDto == null) {
-            throw new ProductNotFoundException("Product with product id "+Id+" is not found");
+           throw new ProductNotFoundException("Product with product id "+id+" is not found");
         }
 
         return fakeStoreProductResponseDto.toProduct();
@@ -57,6 +56,16 @@ public class FakeStoreProductService implements ProductService{
                 "https://fakestoreapi.com/products", fakeStoreProductRequestDto, FakeStoreProductResponseDto.class);
 
         return fakeStoreProductResponseDto.toProduct();
+    }
+
+    @Override
+    public Product createProduct(Product product) {
+        return null;
+    }
+
+    @Override
+    public void deleteProductById(Long id) throws ProductNotFoundException {
+
     }
 
 }

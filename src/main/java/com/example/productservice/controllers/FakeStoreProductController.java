@@ -26,9 +26,9 @@ public class FakeStoreProductController {
     }
 
     @GetMapping("/{Id}")
-    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable ("Id") int Id) throws ProductNotFoundException {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable ("Id") Long id) throws ProductNotFoundException {
 
-        Product product = productService.getProductById(Id);
+        Product product = productService.getProductById(id);
         return new ResponseEntity<>(ProductResponseDto.fromProduct(product), HttpStatus.OK);
 
     }
